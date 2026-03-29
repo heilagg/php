@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\ProfileController;
+use App\Models\Article;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -19,7 +20,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::get('/articles', [ArticleController::class, 'index'])->name('articles.index');
 
-    Route::middleware('role:user')->group(function () {
+    Route::middleware('can:create,'.Article::class)->group(function () {
         Route::get('/articles/create', [ArticleController::class, 'create'])->name('articles.create');
         Route::post('/articles', [ArticleController::class, 'store'])->name('articles.store');
     });
